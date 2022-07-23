@@ -13,6 +13,8 @@ import { createOrGetUser } from '../utils'
 
 const Navbar = () => {
     const { userProfile, addUser, removeUser } = useAuthStore()
+    
+    const router = useRouter()
 
     return (
         <div className='w-full flex justify-between items-center border-b-2 border-gray-200 py-2 px-4'>
@@ -58,6 +60,7 @@ const Navbar = () => {
                                 onClick={() => {
                                     googleLogout()
                                     removeUser()
+                                    router.push('/')
                                 }}
                             >
                                 <AiOutlineLogout color='red' fontSize={28} />  

@@ -62,22 +62,23 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
         </div>
       </div>
 
-      <div className='lg:ml-20 flex gap-4 relative'>
+      <div className='lg:ml-20 mr-10 flex gap-4 relative'>
         <div
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
+          className='flex items-center justify-center sm:w-[930px]'
         >
-          <Link href={'/'}>
-            <video
-              loop
-              ref={videoRef}
-              src={post.video.asset.url}
-              className='lg:w-[600px] h-[300px] md:h-[400px] lg:h-[528px] w-[200px] rounded-2xl cursor-pointer rounded-3xl bg-gray-100'
-            >
-            </video>
+          <Link href={`/details/${post._id}`}>
+              <video
+                loop
+                ref={videoRef}
+                src={post.video.asset.url}
+                className='w-full max-w-[930px] h-[600px] md:h-[400px] lg:h-[528px] rounded-2xl cursor-pointer rounded-3xl bg-gray-100'
+              >
+              </video>
           </Link>
           {isHover && (
-            <div className='absolute cursor-pointer flex p-5 justify-between bottom-1 w-[200px] lg:w-[600px]'>
+            <div className='absolute w-full max-w-[930px] cursor-pointer flex p-5 justify-between bottom-1'>
               {playing 
                 ? (
                   <button>
