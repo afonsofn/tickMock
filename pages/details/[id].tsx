@@ -150,12 +150,12 @@ const Details = ({ postDetails }: IProps) => {
             <div>
               <Link href={'/'}>
                 <div className='mt-3 flex flex-col gap-2'>
-                  <p className='flex gap-2 items-center md:text-md font-bold text-primary'>
+                  <p className='capitalize flex gap-2 items-center md:text-md font-bold text-primary'>
                     {post.postedBy.userName} {` `}
                     <GoVerified className='text-blue-400 text-md' />
                   </p>
-                  <p className='capitalize font-medium text-xs text-gray-500 hidden md:block'>
-                    {post.postedBy.userName}
+                  <p className='font-medium text-xs text-gray-500 hidden md:block'>
+                    {post.postedBy.userName.replaceAll(' ', '').toLowerCase()}
                   </p>
                 </div>
               </Link>
@@ -176,7 +176,7 @@ const Details = ({ postDetails }: IProps) => {
           </div>
 
           <Comments
-            comments={post.comments}
+            comments={post.comments as any}
             comment={comment}
             setComment={setComment}
             addComment={addComment}

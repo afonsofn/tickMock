@@ -20,17 +20,18 @@ export interface Video {
         image: string;
       };
     }[];
-    comments: {
+    comments: Array<{
       comment: string;
       _key: string;
       postedBy: {
         _ref: string;
       };
-    }[];
+    }>;
     userId: string;
   }
   
   export interface IUser {
+    _ref: string;
     _id: string;
     _type: string;
     userName: string;

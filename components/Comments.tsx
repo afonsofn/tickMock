@@ -23,7 +23,7 @@ interface IProps {
 }
 
 const Comments = ({ comments, comment, setComment, addComment, isPostingComment }: IProps) => {
-  const { userProfile } = useAuthStore();
+  const { userProfile, allUsers } = useAuthStore();
 
   return (
     <>
@@ -31,7 +31,42 @@ const Comments = ({ comments, comment, setComment, addComment, isPostingComment 
         <div className='overflow-scoll lg:h-[475px]'>
           {comments?.length 
             ? (
-              <div>videos</div>
+              comments.map((item, index) => (
+                <>
+                  {allUsers.map((user: IUser) => (
+                    user._id === (item.postedBy?._id || item.postedBy?._ref) && (
+                      <div className='p-2 items-center' key={index}>
+                        <Link href={`/profile/${user._id}`}>
+                          <div className='flex items-start gap-3'>
+                            <div className='w-8 h-8'>
+                              <Image
+                                src={user.image}
+                                width={34}
+                                height={34}
+                                className='rounded-full'
+                                alt='user profile'
+                                layout='responsive'
+                              />
+                            </div>
+                            <div className='hidden xl:block'>
+                              <p className='flex gap-1 items-center text-md font-bold text-primary lowercase'>
+                                {user.userName.replaceAll(' ', '').toLowerCase()}
+                                <GoVerified className='text-blue-400' />
+                              </p>
+                              <p className='capitalize text-gray-400 text-xs'>
+                                {user.userName}
+                              </p>
+                            </div>
+                          </div>
+                        </Link>
+                        <div>
+                          <p>{item.comment}</p>
+                        </div>
+                      </div>
+                    )
+                  ))}
+                </>
+              ))
             )
             : (
               <NoResults text='No comments yet' />
