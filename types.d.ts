@@ -7,12 +7,7 @@ export interface Video {
       };
     };
     _id: string;
-    postedBy: {
-      _id: string;
-      userName: string;
-      image: string;
-      urlImage: string;
-    };
+    postedBy: IUser;
     likes: {
       postedBy: {
         _id: string;

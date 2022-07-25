@@ -13,7 +13,7 @@ import { createOrGetUser } from '../utils'
 import { IUser } from '../types';
 
 const Navbar = () => {
-    const { userProfile, addUser, removeUser } = useAuthStore()
+    const { userProfile, addUser, removeUser, isLoggedIn } = useAuthStore()
     const [searchValue, setSearchValue] = useState('')
     
     const router = useRouter()
@@ -30,7 +30,7 @@ const Navbar = () => {
         <div className='w-full flex justify-between items-center border-b-2 border-gray-200 py-2 px-4'>
             <Link href="/">
                 <div className='w-[100px] w-[140px] md:w-[190px] lg:w-[230px]'>
-                    <Image 
+                    <Image
                         className='cursor-pointer'
                         src={Logo}
                         alt='TikTik'
@@ -59,7 +59,7 @@ const Navbar = () => {
                 </form>
             </div>
             <div>
-                {userProfile
+                {isLoggedIn
                     ? (
                         <div className='flex gap-5 md:gap-10'>
                             <Link href={'/upload'}>

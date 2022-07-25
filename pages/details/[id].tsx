@@ -16,6 +16,7 @@ import { Video } from '../../types';
 import axios from 'axios';
 import LikeButton from '../../components/LikeButton';
 import Comments from '../../components/Comments';
+import UserCard from '../../components/UserCard';
 
 interface IProps {
   postDetails: Video;
@@ -28,7 +29,7 @@ const Details = ({ postDetails }: IProps) => {
   const [comment, setComment] = useState('')
   const [isPostingComment, setIsPostingComment] = useState(false)
 
-  const { userProfile }: any = useAuthStore();
+  const { userProfile, allUsers, isLoggedIn }: any = useAuthStore();
   
 
   const router = useRouter();
@@ -52,7 +53,7 @@ const Details = ({ postDetails }: IProps) => {
   }, [post, isVideoMuted])
 
   const handleLike = async (like: boolean) => {
-    if(userProfile) {
+    if(isLoggedIn) {
       const { data } = await axios.put(`${BASE_URL}/api/like`, {
         userId: userProfile._id,
         postId: post._id,
@@ -66,7 +67,7 @@ const Details = ({ postDetails }: IProps) => {
   const addComment = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if(userProfile && comment) {
+    if(isLoggedIn && comment) {
       setIsPostingComment(true)
 
       const { data } = await axios.put(`${BASE_URL}/api/post/${post._id}`, {
@@ -79,6 +80,19 @@ const Details = ({ postDetails }: IProps) => {
       setIsPostingComment(false)
     }
   }
+
+  const mountedComments = post.comments.map((item: any) => {
+    const user = allUsers.find((user: any) => user._id === item.postedBy._id)
+
+    return {
+      comment: item.comment,
+      user: {
+        _id: user._id,
+        image: user.image,
+        userName: user.userName
+      }
+    }
+  })
 
   if (!post) return null
 
@@ -132,41 +146,18 @@ const Details = ({ postDetails }: IProps) => {
       </div>
       <div className='relative w-[1000px] md:w-[900px] lg:w-[700px]'>
         <div className='lg:mt-20 mt-10'>
-          <div className='flex gap-3 p-2 cursor-pointer font-semibold rounded'>
-            <div className='ml-4 md:w-20 md:h-20 w-16 h-16'>
-              <Link href={'/'}>
-                <>
-                  <Image 
-                    width={62}
-                    height={62}
-                    className='rounded-full'
-                    src={post.postedBy.image}
-                    alt='profile Photo'
-                    layout='responsive'
-                  />
-                </>
-              </Link>
-            </div>
+          <Link href={`/profile/${post._id}`}>
             <div>
-              <Link href={'/'}>
-                <div className='mt-3 flex flex-col gap-2'>
-                  <p className='capitalize flex gap-2 items-center md:text-md font-bold text-primary'>
-                    {post.postedBy.userName} {` `}
-                    <GoVerified className='text-blue-400 text-md' />
-                  </p>
-                  <p className='font-medium text-xs text-gray-500 hidden md:block'>
-                    {post.postedBy.userName.replaceAll(' ', '').toLowerCase()}
-                  </p>
-                </div>
-              </Link>
+              <UserCard user={post.postedBy} card_size='large' />
             </div>
-          </div>
+          </Link>
+
           <p className='px-10 pt-2 text-lg text-gray-600'>
             {post.caption}
           </p>
 
           <div className='mt-10 px-10'>
-            {userProfile && (
+            {isLoggedIn && (
               <LikeButton
                 likes={post.likes}
                 handleLike={() => handleLike(true)}
@@ -176,7 +167,7 @@ const Details = ({ postDetails }: IProps) => {
           </div>
 
           <Comments
-            comments={post.comments as any}
+            comments={mountedComments as any}
             comment={comment}
             setComment={setComment}
             addComment={addComment}

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { SanityAssetDocument } from '@sanity/client';
 import { useRouter } from 'next/router';
 import { FaCloudUploadAlt } from 'react-icons/fa';
-import { MdDelete } from 'react-icons/md';
 import axios from 'axios';
+import { IUser } from '../types';
 
 import useAuthStore from '../store/authStore';
 import { BASE_URL } from '../utils';
@@ -18,7 +18,7 @@ const Upload = () => {
     const [topic, setTopic] = useState(topics[0].name)
     const [savingPost, setSavingPost] = useState(false)
 
-    const { userProfile }: { userProfile: any } = useAuthStore()
+    const { userProfile }: { userProfile: IUser } = useAuthStore()
 
     const router = useRouter()
 

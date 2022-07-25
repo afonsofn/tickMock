@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { NextPage } from 'next';
-import { Video } from '../types';
+import { IUser, Video } from '../types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi';
 import { BsFillPlayFill, BsFillPauseFill } from 'react-icons/bs';
 import { GoVerified } from 'react-icons/go';
 import { BsPlay } from 'react-icons/bs';
+import UserCard from './UserCard';
 
 interface IProps {
   post: Video;
@@ -39,35 +40,11 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
   return (
     <div className='flex flex-col border-b-2 border-gray-200 pb-6'>
       <div>
-        <div className='flex gap-3 p-2 cursor-pointer font-semibold rounded'>
-          <div className='md:w-16 md:h-16 w-10 h-10'>
-            <Link href={`/profile/${post.postedBy._id}`}>
-              <>
-                <Image 
-                  width={62}
-                  height={62}
-                  className='rounded-full'
-                  src={post.postedBy.image}
-                  alt='profile Photo'
-                  layout='responsive'
-                />
-              </>
-            </Link>
-          </div>
+        <Link href={`/profile/${post.postedBy._id}`}>
           <div>
-            <Link href={`/profile/${post.postedBy._id}`}>
-              <div className='flex items-center gap-2'>
-                <p className='capitalize flex gap-2 items-center md:text-md font-bold text-primary'>
-                  {post.postedBy.userName} {` `}
-                  <GoVerified className='text-blue-400 text-md' />
-                </p>
-                <p className='font-medium text-xs text-gray-500 hidden md:block'>
-                  {post.postedBy.userName.replaceAll(' ', '').toLowerCase()}
-                </p>
-              </div>
-            </Link>
+            <UserCard user={post.postedBy} card_size='medium' />
           </div>
-        </div>
+        </Link>
       </div>
 
       <div className='lg:ml-20 mr-10 flex gap-4 relative'>

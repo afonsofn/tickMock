@@ -6,12 +6,13 @@ import { GoVerified } from 'react-icons/go';
 import useAuthStore from '../store/authStore';
 import NoResults from './NoResults';
 import { IUser } from '../types';
+import UserCard from './UserCard';
 
 interface IComment {
   comment: string;
   length?: number;
   _key?: string;
-  postedBy?: IUser;
+  user: IUser;
 }
 
 interface IProps {
@@ -23,49 +24,24 @@ interface IProps {
 }
 
 const Comments = ({ comments, comment, setComment, addComment, isPostingComment }: IProps) => {
-  const { userProfile, allUsers } = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
 
   return (
     <>
       <div className='border-t-2 border-gray-200 pt-4 px-10 bg-[#f8f8f8] border-b-2 lg:pb-0 pb-[100px]'>
         <div className='overflow-scoll lg:h-[475px]'>
           {comments?.length 
-            ? (
-              comments.map((item, index) => (
-                <>
-                  {allUsers.map((user: IUser) => (
-                    user._id === (item.postedBy?._id || item.postedBy?._ref) && (
-                      <div className='p-2 items-center' key={index}>
-                        <Link href={`/profile/${user._id}`}>
-                          <div className='flex items-start gap-3'>
-                            <div className='w-8 h-8'>
-                              <Image
-                                src={user.image}
-                                width={34}
-                                height={34}
-                                className='rounded-full'
-                                alt='user profile'
-                                layout='responsive'
-                              />
-                            </div>
-                            <div className='hidden xl:block'>
-                              <p className='flex gap-1 items-center text-md font-bold text-primary lowercase'>
-                                {user.userName.replaceAll(' ', '').toLowerCase()}
-                                <GoVerified className='text-blue-400' />
-                              </p>
-                              <p className='capitalize text-gray-400 text-xs'>
-                                {user.userName}
-                              </p>
-                            </div>
-                          </div>
-                        </Link>
-                        <div>
-                          <p>{item.comment}</p>
-                        </div>
-                      </div>
-                    )
-                  ))}
-                </>
+            ? (comments.map((item, index) => (
+                <div className='p-2 items-center' key={index}>
+                  <Link href={`/profile/${item.user._id}`}>
+                    <div>
+                      <UserCard user={item.user} card_size='small' />
+                    </div>
+                  </Link>
+                  <div>
+                    <p>{item.comment}</p>
+                  </div>
+                </div>
               ))
             )
             : (
@@ -74,7 +50,7 @@ const Comments = ({ comments, comment, setComment, addComment, isPostingComment 
           }
         </div>
       </div>
-      {userProfile && (
+      {isLoggedIn && (
         <div className='pt-6 px-2 md:px-10'>
           <form onSubmit={addComment} className="flex gap-4">
             <input

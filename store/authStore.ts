@@ -5,12 +5,33 @@ import { IUser } from '../types';
 
 import { BASE_URL } from "../utils";
 
-const authStore = (set: any) => ({
+const authStore = (set: any, get: any) => ({
     allUsers: [],
-    userProfile: null,
+    userProfile: {
+        _ref: '',
+        _id: '',
+        _type: '',
+        userName: '',
+        image: '',
+    },
+    isLoggedIn: false,
 
-    addUser: (user: IUser) => set({ userProfile: user }),
-    removeUser: () => set({ userProfile: null }),
+    addUser: (user: IUser) => {
+        set({ userProfile: user })
+        get().fetchAllUsers()
+        set({ isLoggedIn: true })
+    },
+
+    removeUser: () => {
+        set({ userProfile: {
+            _ref: '',
+            _id: '',
+            _type: '',
+            userName: '',
+            image: '',
+        } })
+        set({ isLoggedIn: false })
+    },
 
     fetchAllUsers: async () => {
         const { data } = await axios.get(`${BASE_URL}/api/users`);
