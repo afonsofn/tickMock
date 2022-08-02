@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
-import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
-import GoogleLogin from 'react-google-login'
 import { AiFillHome, AiOutlineMenu } from 'react-icons/ai'
 import { ImCancelCircle } from 'react-icons/im'
 
 import Discover from './Discover'
 import SuggestedAccounts from './SuggestedAccounts'
 import Footer from './Footer'
+import { useRouter } from 'next/router'
 
 const Sidebar = () => {
     const [showSideBar, setshowSideBar] = useState(true)
 
+    const router = useRouter()
+
     const normalLink = 'flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold text-[#F51997] rounded'
+
+    if(router.route === '/upload') return null
 
     return (
         <div>

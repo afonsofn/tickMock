@@ -25,3 +25,23 @@ export const createOrGetUser = async (response: any, addUser: any) => {
 
   addUser(user);
 };
+
+export const formatDoc = (caption: string, topic: string, videoId: string, userId: string) => {
+  return {
+    _type: 'post',
+    caption,
+    topic,
+    video: {
+        _type: 'file',
+        asset: {
+            _type: 'reference',
+            _ref: videoId,
+        },
+    },
+    userId: userId,
+    postedBy: {
+        _type: 'postedBy',
+        _ref: userId,
+    }
+  };
+}

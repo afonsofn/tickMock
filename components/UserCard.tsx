@@ -1,5 +1,5 @@
-import Image from 'next/image'
 import React from 'react'
+import Image from 'next/image'
 import { GoVerified } from 'react-icons/go';
 import { IUser } from '../types';
 
@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const UserCard = ({ user, card_size }: IProps) => {
-    const cardSize: any = () => {
+    const cardSize = () => {
         const sizes: any = {
             'small': ['gap-3 cursor-pointer', 'w-8 h-8', 34, '', 'text-sm', 'hidden xl:block'],
             'medium': ['gap-3 p-2 cursor-pointer', 'md:w-16 md:h-16 w-10 h-10', 62, '', '', 'hidden xl:block'],
